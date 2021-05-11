@@ -1,20 +1,28 @@
-FunDegNumPlot <- function(DEG,main) {
-  cate=colnames(DEG)
-  DEG[1,]=DEG[1,]
-  DEG[2,]=DEG[2,]*(-1)
-  #Col.A="#ab2023"
-  #Col.B="#1c76b1"
-  Col.B="#F8766D"
-  Col.A="#00BFC4"
-  ylm=c(min(DEG[2,]*1.5),max(DEG[1,]*1.5))
-  BAR=barplot(DEG[1,],ylim=ylm,main=main,ylab="",col=Col.A,font=2,cex.lab=2,width=1,space=1,yaxt="n",names.arg="")
-  text(BAR,DEG[1,],labels=DEG[1,],adj=c(0.5,-0.5),font=1)
-  BAR=barplot(DEG[2,],ylim=ylm,xlab="",ylab="",main="",col=Col.B,font=2,cex.lab=2,width=1,space=1,add=T,yaxt="n",names.arg="")
-  text(BAR,DEG[2,],labels=(-1*DEG[2,]),adj=c(0.5,1.5),font=1)
-  abline(h=0,lwd=1.5,lty=2)
-  legend("topleft",c("Up","Down"),fill=c(Col.A,Col.B),bty="n",border="NA")
-  axis(2,labels=F,font.axis=2)
-  text(BAR,par("usr")[3]*0.95,label=cate,srt=90,adj=c(1,1,1,1),xpd=TRUE,cex=1,font=2)
+FunRF_FindAllMarkers_para <- function(data,ct=0.3,assay="RNA",slot="data") {
+  temp.id <- unique(as.vector(Idents(data)))
+  temp.gene <- list()
+  for (n in c(1:(length(temp.id)-1))) {
+    for (m in c(2:length(temp.id))) {
+      if (m >n) {
+        temp.gene[[paste(m,n,sep="_")]] <- paste(m,n,sep="_")
+      }
+    }
+  }
+  temp.c <- names(temp.gene)
+  temp.gene <- foreach (x=temp.gene,w=temp.c, .combine=c) %dopar% {
+    rv=list()
+    rv[[w]]=FindMarkers(data,ident.1=temp.id[as.numeric(unlist(strsplit(x,"_") )[2])],ident.2=temp.id[as.numeric(unlist(strsplit(x,"_") )[1])],test.use = "roc",verbose=F,assay=assay,slot=slot) %>% tibble::rownames_to_column("gene") %>% tbl_df() %>%  mutate(BG=ifelse(myAUC>=0.5,temp.id[as.numeric(unlist(strsplit(x,"_") )[2])],temp.id[as.numeric(unlist(strsplit(x,"_") )[1])])) %>%  mutate(EG=ifelse(myAUC>=0.5,temp.id[as.numeric(unlist(strsplit(x,"_") )[1])],temp.id[as.numeric(unlist(strsplit(x,"_") )[2])]))
+    rv
+  }
+  
+  temp.gene <- do.call("bind_rows",temp.gene)
+  temp.out <- list()
+  temp.out$detail <- temp.gene
+  temp.out$stat <- temp.gene  %>% filter(power > ct)  %>% group_by(gene,BG) %>% summarise(EGset=paste(EG,collapse=","),nEGset=n()) %>% group_by(gene,EGset,nEGset,) %>% summarise(BGset=paste(BG,collapse=","),nBGset=n())
+  temp.out$sig <- temp.gene %>% filter(power > ct) %>% group_by(gene,BG) %>% summarise(n=n(),power=mean(power)) %>% inner_join(temp.out$stat %>% filter(nBGset==1) %>% ungroup() %>% select(BGset,nEGset) %>% unique()%>% group_by(BGset) %>% top_n(1,nEGset) %>% ungroup()%>% rename(n=nEGset,BG=BGset),by=c("BG","n")) %>% mutate(n=(length(temp.id)-n)) %>% arrange(desc(power)) %>% ungroup() %>% mutate(set=BG) %>%  select(-BG) %>% mutate(NP="pos")%>% arrange(set,NP,desc(power))
+  return(
+    temp.out
+  )
 }
 
 AP4 <- function(data.temp) {

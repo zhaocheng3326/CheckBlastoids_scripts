@@ -254,10 +254,10 @@ temp.sel.exp <- lognormExp.mBN[temp.sel.gene ,c(temp.M.10X$cell,temp.M.smt2$cell
 Plot.exp.viol <- list()
 Plot.exp.viol.tiff <- list()
 for (g in temp.sel.gene ) {
-  Plot.exp.viol[[g]] <- temp.sel.exp%>% filter(Gene==g) %>% ggplot(mapping=aes(x=od,y=logExp)) + geom_violin(mapping=aes(fill=EML),color="black",scale = "width")+geom_jitter(size=0.05)+ theme_classic() + theme(axis.text.x=element_text(angle = 40,hjust = 1)) +NoLegend()+ggtitle(g)+theme(plot.title = element_text(hjust=0.5,face="bold"))+ylab("Expression level")+xlab("")+facet_grid(~seqType,scale="free_x")+theme(strip.background = element_blank(),strip.text.x = element_blank())+scale_fill_manual(values=vln.col.set)+theme(axis.text.x = element_text(size = 6))+ylab("")
+  Plot.exp.viol[[g]] <- temp.sel.exp%>% filter(Gene==g) %>% ggplot(mapping=aes(x=od,y=logExp)) + geom_violin(mapping=aes(fill=EML),color="black",scale = "width")+geom_jitter(size=0.01)+ theme_classic() + theme(axis.text.x=element_text(angle = 40,hjust = 1)) +NoLegend()+ggtitle(g)+theme(plot.title = element_text(hjust=0.5,face="bold"))+ylab("Expression level")+xlab("")+facet_grid(~seqType,scale="free_x")+theme(strip.background = element_blank(),strip.text.x = element_blank())+scale_fill_manual(values=vln.col.set)+theme(axis.text.x = element_text(size = 6))+ylab("")
   Plot.exp.viol.tiff[[g]] <- temp.sel.exp%>% filter(Gene==g) %>% ggplot(mapping=aes(x=od,y=logExp)) + geom_violin(mapping=aes(fill=EML),color="black",scale = "width")+ theme_classic() + theme(axis.text.x=element_text(angle = 40,hjust = 1)) +NoLegend()+ggtitle(g)+theme(plot.title = element_text(hjust=0.5,face="bold"))+ylab("Expression level")+xlab("")+facet_grid(~seqType,scale="free_x")+theme(strip.background = element_blank(),strip.text.x = element_blank())+scale_fill_manual(values=vln.col.set)+theme(axis.text.x = element_text(size = 6))+ylab("")
 }
-pdf("D2.AmnVSTE.Vin.pdf",9,3)
+pdf("D2.AmnVSTE.Vin.pdf",13.5,4.5)
 print(
   plot_grid(plotlist=Plot.exp.viol,nrow=1,ncol=6)
 )
@@ -320,7 +320,7 @@ Plot.cluster.num$EBD2 <- data.ob.umap %>% filter(pj %in% c("EBD2"))  %>% group_b
 Plot.cluster.num$IBD2 <- data.ob.umap %>% filter(pj %in% c("IBD2"))  %>% group_by(cluster_EML) %>% summarise(nCell=n_distinct(cell))  %>% mutate(Perc=nCell/sum(nCell)) %>% mutate(od=factor(cluster_EML,c("ELC","HLC","TLC","MeLC","AMLC","Undef"),ordered = T)) %>% arrange(od) %>% mutate(od=paste0(od,"\n(",nCell,")")) %>% mutate(od=factor(od,od,,ordered = T))  %>% ggplot()+geom_bar(mapping=aes(x=od,y=Perc*100,fill=cluster_EML),width=0.5,stat = "identity")+theme_classic()+ylab("% Proportion of cells")+xlab("")+ ggtitle("Iblastoids")+theme(plot.title = element_text(hjust=0.5))+ theme(legend.position="right",legend.title = element_blank())+scale_fill_manual(values=lineage.col.set)+ylim(0,50)
 
 
-pdf("D2.figure.pdf",9,14)
+pdf("D2.figure.raw.pdf",9,14)
 (
   plot_spacer()+Plot.umap$em+Plot.umap$em_legend+plot_spacer()+plot_layout(widths = c(0.5,2,1,0.5))
 )/(
@@ -335,7 +335,7 @@ pdf("D2.figure.pdf",9,14)
 dev.off()
 
 
-pdf("D2.figure.sup.pdf",9,14)
+pdf("D2.figure.sup.raw.pdf",9,14)
 wrap_plots(
   ( 
     plot_spacer()/Plot.umap$cluster/ plot_spacer()+plot_layout(heights = c(0.2,2,0.2))

@@ -1,0 +1,6 @@
+RD: /home/zhaoch/snic2021-23-497/Publica_data/GSE177689
+SampleName_file:  /home/zhaoch/My_project/JP_project/bin/GSE177689_nicolBla/Sample.name.file
+merge_src: /home/zhaoch/My_project/JP_project/src/merge_rsem_data.py
+GTF: /home/zhaoch/snic2021-23-497/Genome/refdata-cellranger-GRCh38-3.0.0/genes/genes.gtf
+GD_star: /home/zhaoch/snic2021-23-497/Genome/refdata-cellranger-GRCh38-3.0.0/star/
+RS_GF: /home/zhaoch/snic2021-23-497/Genome/refdata-cellranger-GRCh38-3.0.0/rsem

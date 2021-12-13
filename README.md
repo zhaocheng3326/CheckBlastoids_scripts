@@ -2,7 +2,7 @@
 
 
 
-This repository contains the code used to check the Blastoids single-cel RNA-seq data
+This repository contains the code used to check the Blastoids single-cell RNA-seq data
 
 - Xiaodong Liu, Jia Ping Tan, Jan Schröder, Asma Aberkane, John F. Ouyang, Monika Mohenska, Sue Mei Lim, Yu B. Y. Sun, Joseph Chen, Guizhi Sun, Yichen Zhou, Daniel Poppe, Ryan Lister, Amander T. Clark, Owen J. L. Rackham, Jennifer Zenker# & Jose M. Polo&#. **Modelling human blastocysts by reprogramming fibroblasts into iBlastoids.** *Nature* (2021). https://doi.org/10.1038/s41586-021-03372-y.
 

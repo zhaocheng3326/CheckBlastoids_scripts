@@ -85,7 +85,10 @@ query_ref.raw <- lapply( pred_files,function(x) {read.delim(paste(pred_dir,x,sep
 query_ref <- query_ref.raw %>% filter(pval <pv2)  
 
 #' ## for the most significant ones
-query_ref %>% filter(ref_EML=="TE" | ref_EML=="Amnion") %>% group_by(query_cell,ref_EML) %>% summarise(pval=min(pval)) %>% ungroup() %>% spread(ref_EML,pval) %>% replace(.,is.na(.),0.1) %>% inner_join(query.meta,by="query_cell")  %>% ggplot+geom_point(mapping=aes(x=-log10(Amnion),y=-log10(TE),col=query_pj))+geom_vline(xintercept=-log10(0.015))+geom_hline(yintercept=-log10(0.015))+xlim(0.9,4)+ylim(0.9,4)+facet_wrap(~query_pj)
+
+print(
+  query_ref %>% filter(ref_EML=="TE" | ref_EML=="Amnion") %>% group_by(query_cell,ref_EML) %>% summarise(pval=min(pval)) %>% ungroup() %>% spread(ref_EML,pval) %>% replace(.,is.na(.),0.1) %>% inner_join(query.meta,by="query_cell")  %>% ggplot+geom_point(mapping=aes(x=-log10(Amnion),y=-log10(TE),col=query_pj))+geom_vline(xintercept=-log10(0.015))+geom_hline(yintercept=-log10(0.015))+xlim(0.9,4)+ylim(0.9,4)+facet_wrap(~query_pj)
+)
 
 query_ref.sig <- query_ref %>% filter(pval <pv1)
 query_ref.sig.int.type <- query_ref.sig  %>% filter(ref_EML %in% c("EPI_Amnion","EPI.PrE.INT","PriS_Amnion")) %>% select(query_cell,ref_EML,ref_pj) %>% unique()

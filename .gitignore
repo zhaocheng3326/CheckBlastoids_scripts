@@ -10,7 +10,7 @@ data/*
 log/*
 tmp_data/*
 results/*
-*/*html
+#*/*html
 # local big files
 PPT/*
 Paper/*

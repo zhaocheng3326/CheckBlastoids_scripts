@@ -162,7 +162,7 @@ temp.M <- temp.M  %>% rows_update(temp.meta %>% filter(EML %in% c("EPI_PriS"))%>
 
 #' check the heatmap of top marker genes
 zs.limit=2.5
-temp.exp <- data.AEP@assays$RNA@counts[unlist(temp.mk.list),]
+temp.exp <- data.AEP@assays$RNA@data[unlist(temp.mk.list),]
 temp.sel.exp <- t(apply(temp.exp,1,scale))
 colnames(temp.sel.exp) <- colnames(temp.exp)
 rownames(temp.sel.exp) <- rownames(temp.exp)

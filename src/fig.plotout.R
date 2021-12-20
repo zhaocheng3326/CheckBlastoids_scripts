@@ -31,7 +31,6 @@ load(paste0("tmp_data/",TD,"/figplot.Rdata"),verbose=T)
 
 
 
-
 pdf("temp.fig1A.pdf",15,18)
 (
   plot_spacer()+plot.results$umap.em+plot.results$umap.em.legend+plot_spacer()+plot_layout(widths = c(0.6,2,1,0.6))
@@ -70,7 +69,7 @@ plot.results$MK.heatmap.EM
 plot.results$MK.heatmap.blastoids
 plot.results$MK.heatmap.blastoids.meanlogExp
 dev.off()
-pdf("temp.fig1d_pca.pdf",5.5,4)
+pdf("temp.fig1d_pca.pdf",7,4)
 plot.results$psd.human.pca
 dev.off()
 
@@ -183,7 +182,7 @@ dev.off()
 
 
 
-
+data.ob.umap %>% filter(seurat_clusters=="C13") %>% filter(pj %in% c("IBD2","EBD2","nBGuo","nicolBla")) %>% filter(subCT %in% c("None","blastoids","EB_ELC","Gata3_Day3.1","Gata3_Day3.3","Gata3_Day3.9")) %>% pull(pj) %>% table()
 
 
 

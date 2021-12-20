@@ -65,10 +65,10 @@ meta.filter <- rows_update(meta.filter,temp.anno %>% filter(cell %in% meta.filte
 
 
 #' fix the psa-epi cells issue from D3post 
-temp.anno <- data.ob.umap %>% filter(pj=="D3post" & EML=='PSA-EPI') %>% mutate(EML="Epi")  %>% mutate(EML=ifelse(seurat_clusters %in% c("C3"), "TE",EML))%>% mutate(EML=ifelse(seurat_clusters %in% c("C6"), "Mes",EML))%>% mutate(EML=ifelse(seurat_clusters %in% c("C5"), "Endoderm",EML)) %>% select(cell,EML)
+temp.anno <- data.ob.umap %>% filter(pj=="D3post" & EML=='PSA-EPI') %>% mutate(EML="Epi")  %>% mutate(EML=ifelse(seurat_clusters %in% c("C3"), "TE",EML))%>% mutate(EML=ifelse(seurat_clusters %in% c("C5"), "Mes",EML))%>% mutate(EML=ifelse(seurat_clusters %in% c("C4"), "Endoderm",EML)) %>% select(cell,EML)
 meta.filter <- rows_update(meta.filter,temp.anno %>% filter(cell %in% meta.filter$cell),by="cell") 
 #' fix the mesdoerm cells from D3post 
-temp.anno <- data.ob.umap %>% filter(pj=="D3post") %>%  filter(seurat_clusters %in% c("C4","C6")) %>% select(cell) %>% mutate(EML="Mes")
+temp.anno <- data.ob.umap %>% filter(pj=="D3post") %>%  filter(seurat_clusters %in% c("C5","C6")) %>% select(cell) %>% mutate(EML="Mes")
 meta.filter <- rows_update(meta.filter,temp.anno,by="cell") 
 
 #'  update the CS7 annotation 

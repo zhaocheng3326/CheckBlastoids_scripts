@@ -44,7 +44,7 @@ load("tmp_data/gene.meta.Rdata",verbose = T)
 
 
 #' QC 
-meta.filter <- meta.all %>% filter(seqType=="smt2" & pj !="Blakeley" & pj !="nBGuo" & pj!="nicolBla") %>% filter(nGene >2000 & mt.perc < 0.125)  %>% bind_rows(meta.all %>% filter(pj  %in% c("Blakeley","nBGuo")) %>% filter(nGene >2000 & mt.perc < 0.2)) %>% bind_rows(readRDS(paste0("tmp_data/",TD,"/meta.AMN.further.rds")))  %>% bind_rows(readRDS(paste0("tmp_data/",TD,"/meta.IBD2.further.rds"))) %>% bind_rows(readRDS(paste0("tmp_data/",TD,"/meta.EBD2.LW60.further.rds"))) %>% bind_rows(readRDS(paste0("tmp_data/",TD,"/meta.nicolBla.further.rds")))  %>% mutate(EML=gsub("Primitive_Streak","PriS",EML)) %>% mutate(EML=gsub("Emergent_Mesoderm","EmMes",EML)) %>% mutate(EML=gsub("YS_Mesoderm","YsMes",EML)) %>% mutate(EML=gsub("Nascent_Mesoderm","NasMes",EML)) %>% mutate(EML=gsub("Axial_Mesoderm","AxMes",EML)) %>% mutate(EML=gsub("Advanced_Mesoderm","AdvMes",EML)) %>% mutate(EML=gsub("Non-Neural_Ectoderm","Ectoderm",EML)) %>% mutate(EML=gsub("ExE_Mesoderm","ExE_Mes",EML)) %>% filter(! EML %in% c("Hemogenic_Endothelial_Progenitors","Erythroblasts"))
+meta.filter <- meta.all %>% filter(seqType=="smt2" & pj !="Blakeley" & pj !="nBGuo" & pj!="nicolBla") %>% filter(nGene >2000 & mt.perc < 0.125)  %>% bind_rows(meta.all %>% filter(pj  %in% c("Blakeley","nBGuo")) %>% filter(nGene >2000 & mt.perc < 0.2)) %>% bind_rows(readRDS(paste0("tmp_data/",TD,"/meta.AMN.further.rds")))  %>% bind_rows(readRDS(paste0("tmp_data/",TD,"/meta.IBD2.further.rds"))) %>% bind_rows(readRDS(paste0("tmp_data/",TD,"/meta.EBD2.LW60.further.rds"))) %>% bind_rows(readRDS(paste0("tmp_data/",TD,"/meta.nicolBla.further.rds")) %>% filter(! devTime %in% c("24h","60h")))  %>% mutate(EML=gsub("Primitive_Streak","PriS",EML)) %>% mutate(EML=gsub("Emergent_Mesoderm","EmMes",EML)) %>% mutate(EML=gsub("YS_Mesoderm","YsMes",EML)) %>% mutate(EML=gsub("Nascent_Mesoderm","NasMes",EML)) %>% mutate(EML=gsub("Axial_Mesoderm","AxMes",EML)) %>% mutate(EML=gsub("Advanced_Mesoderm","AdvMes",EML)) %>% mutate(EML=gsub("Non-Neural_Ectoderm","Ectoderm",EML)) %>% mutate(EML=gsub("ExE_Mesoderm","ExE_Mes",EML)) %>% filter(! EML %in% c("Hemogenic_Endothelial_Progenitors","Erythroblasts"))
 
 
 
@@ -52,7 +52,7 @@ meta.filter <- meta.all %>% filter(seqType=="smt2" & pj !="Blakeley" & pj !="nBG
 meta.AMN.ds <- readRDS(paste0("tmp_data/",TD,"/meta.AMN.further.ds.rds"))
 meta.IBD2.ds <- readRDS(paste0("tmp_data/",TD,"/meta.IBD2.further.ds.rds"))
 meta.EBD2.ds <- readRDS(paste0("tmp_data/",TD,"/meta.EBD2.LW60.further.ds.rds"))
-meta.nicolBla.ds <- readRDS(paste0("tmp_data/",TD,"/meta.nicolBla.further.ds.rds"))
+meta.nicolBla.ds <- readRDS(paste0("tmp_data/",TD,"/meta.nicolBla.further.ds.rds"))  %>% filter(! devTime %in% c("24h","60h")) 
 
 
 

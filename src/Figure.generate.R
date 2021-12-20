@@ -66,11 +66,11 @@ lineage.mk <- readRDS(paste0("tmp_data/",TD,"/",MM,".mk.allL.rds"))
 
 
 #' loading whole human integration results
-data.ob.umap <- readRDS(paste0("tmp_data/",TD,"/Pub.D2.umap.cord.rds")) 
+data.ob.umap <- readRDS(paste0("tmp_data/",TD,"/Pub.D2.umap.cord.rds")) %>% mutate(UMAP_2=(-1)*UMAP_2)%>% mutate(UMAP_1=(-1)*UMAP_1)
 
 
 #' loading  human integration results except for JPF2019
-data.ob.NoJPF2019.umap <- readRDS(paste0("tmp_data/",TD,"/Pub.D2.withoutAMLC.umap.cord.rds")) 
+data.ob.NoJPF2019.umap <- readRDS(paste0("tmp_data/",TD,"/Pub.D2.withoutAMLC.umap.cord.rds")) %>% mutate(UMAP_1=(-1)*UMAP_1)
 
 #' loading cross-species integration results
 human.NHP.IT.umap.list <- readRDS(paste0("tmp_data/",TD,"/NHP.IT.umap.rds"))
@@ -302,13 +302,13 @@ pca.it <- pca.out$human
 pc1.imp <- round(100*summary(pca.it)$importance[2,1],digits=2) 
 pc2.imp <-round(100*summary(pca.it)$importance[2,2],digits=2) 
 temp <- pca.it$x[,c("PC1","PC2")] %>% as.data.frame()%>% tibble::rownames_to_column("Sample") %>% mutate(Sample=ifelse(Sample=="D3post_TE_pre","D3_PreTE",Sample))%>% mutate(Sample=ifelse(Sample=="D3post_TE_post","D3_PostTE",Sample)) %>% separate(Sample,c("pj","anno"),sep="_",remove=F) %>% mutate(anno=ifelse(anno=="Tsw","AMLC",anno))%>% mutate(anno=ifelse(anno %in% c("PreTE","PostTE"),"TE",anno)) 
-plot.results$psd.human.pca <- ggplot(temp,mapping=aes(x=PC1,y=PC2))+geom_point(mapping=aes(col=pj,shape=anno),size=3)+ggrepel::geom_text_repel(mapping=aes(label=Sample))+xlab(paste("PC1(",pc1.imp,"% Proportion of Variance)"))+ylab(paste("PC2(",pc2.imp,"% Proportion of Variance)"))+theme_classic()+ylim(-15,25)+xlim(-25,50)+scale_color_manual(values=pj.col)
+plot.results$psd.human.pca <- ggplot(temp,mapping=aes(x=PC1,y=PC2))+geom_point(mapping=aes(col=pj,shape=anno),size=3)+ggrepel::geom_text_repel(mapping=aes(label=Sample))+xlab(paste("PC1(",pc1.imp,"% Proportion of Variance)"))+ylab(paste("PC2(",pc2.imp,"% Proportion of Variance)"))+theme_classic()+ylim(-20,20)+xlim(-25,50)+scale_color_manual(values=pj.col)
 
 pca.it <- pca.out$HuMonk
 pc1.imp <- round(100*summary(pca.it)$importance[2,1],digits=2) 
 pc2.imp <-round(100*summary(pca.it)$importance[2,2],digits=2) 
 temp <- pca.it$x[,c("PC1","PC2")] %>% as.data.frame()%>% tibble::rownames_to_column("Sample") %>% mutate(Sample=ifelse(Sample=="D3post_TE_pre","D3_PreTE",Sample))%>% mutate(Sample=ifelse(Sample=="D3post_TE_post","D3_PostTE",Sample)) %>% mutate(Sample=gsub("NHP_D","NHPD",Sample))%>% separate(Sample,c("pj","anno"),sep="_",remove=F) %>% mutate(anno=ifelse(anno=="Tsw","AMLC",anno)) %>% mutate(anno=ifelse(anno %in% c("PreTE","PostTE"),"TE",anno))  %>% mutate(pj=ifelse(pj %in% c("NHPD10","NHPD12","NHPD14"),"NHP",pj))
-plot.results$psd.NHP.human.pca <- ggplot(temp,mapping=aes(x=PC1,y=PC2))+geom_point(mapping=aes(col=pj,shape=anno))+ggrepel::geom_text_repel(mapping=aes(label=Sample))+xlab(paste("PC1(",pc1.imp,"% Proportion of Variance)"))+ylab(paste("PC2(",pc2.imp,"% Proportion of Variance)"))+theme_classic()+ylim(-25,50)+xlim(-25,50)+scale_color_manual(values=pj.col)
+plot.results$psd.NHP.human.pca <- ggplot(temp,mapping=aes(x=PC1,y=PC2))+geom_point(mapping=aes(col=pj,shape=anno))+ggrepel::geom_text_repel(mapping=aes(label=Sample))+xlab(paste("PC1(",pc1.imp,"% Proportion of Variance)"))+ylab(paste("PC2(",pc2.imp,"% Proportion of Variance)"))+theme_classic()+ylim(-25,50)+xlim(-25,50)+scale_color_manual(values=pj.col)+scale_shape_manual(values = c(AMLC=20,Amnion=17,Amnion1=15, Amnion2=3, Okae=12, TE=7, TLC=8))
 
 
 
